@@ -1,0 +1,22 @@
+sqterminal
+|
+|
+-doc
+|
+|
+-source
+    |
+    -external_text.py
+    |
+    -terminal.py
+    |
+    -sqhandler.py
+    |
+    -VariableContainer.py
+    |
+    -main.py
+    |
+    -sqterminal.exe
+|
+|
+-installer.exe
