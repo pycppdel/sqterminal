@@ -22,5 +22,7 @@ Commands
         "ANY OTHER STATEMENT": "sql statements like SELECT, CREATE TABLE usw. will be executed automatically"
 Installer Download:
 
+https://pycppdel.github.io/sqterminal/
+
 
         
