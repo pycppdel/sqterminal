@@ -20,7 +20,7 @@ Commands
         "file = name": "sets the current database file to name, memory sets it to session memory"
         
         "ANY OTHER STATEMENT": "sql statements like SELECT, CREATE TABLE usw. will be executed automatically"
-Installer Download:
+Download:
 
 https://pycppdel.github.io/sqterminal/
 
