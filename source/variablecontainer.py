@@ -10,15 +10,14 @@ class VariableContainer:
         self.variable_operations = {
 
         "string": str,
-        "int": int,
-        "byte": byte,
+        "int": str,
         }
 
     def exists(self, var):
         """
         checks if variable exists
         """
-        return (var in self.variables.keys())
+        return (var in self.saved_variables.keys())
 
     def get_var(self, name):
         """
@@ -31,7 +30,17 @@ class VariableContainer:
         makes variable
         """
         try:
-            self.saved_variables[name] = self.variable_operations[value]
+            self.saved_variables[name] = value
             return True
         except Exception:
+            return False
+
+    def delete(self, name):
+        """
+        deletes variable
+        """
+        try:
+            del self.saved_variables[name]
+            return True
+        except:
             return False
