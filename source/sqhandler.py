@@ -8,15 +8,10 @@ class SqHandler:
     handler for incoming requests
     """
     def __init__(self):
-        #making all variables
-        self.connection = sqlite3.connect(":memory:")
-        self.cursor = self.connection.cursor()
 
-        #filemode is initially memory
-        #file points to the file the data is stored. If the mode is memory
-        #the file is None
-        self.filemode = "memory"
-        self.file = None
+        #file is a prerequesite for comnparing file in the cgange method
+        self.file = ""
+        self.change_file("memory")
 
     def execute(self, eingabe, read=False):
         """
@@ -26,15 +21,24 @@ class SqHandler:
 
         if Answer is no string, something failed
         """
-        backstring = []
+        #executing
         self.cursor.execute(eingabe)
-        if not read:
+        #trying to commit
+        try:
             self.connection.commit()
-        else:
-            backstring = self.cursor.fetchall()
+        except Exception:
+            #something went wrong: rollback + failure message
+            self.connection.rollback()
             return False
-
-        return backstring
+        #commit happened:
+        if read:
+            #if it was SELECT statement
+            backstring = self.cursor.fetchall()
+            #returning selected items
+            return backstring
+        else:
+            #everything clear: return true
+            return True
 
     def change_file(self, filename):
         """
@@ -60,4 +64,4 @@ class SqHandler:
         #making connection and cursor
         self.connection = (sqlite3.connect(":memory:") if self.filemode == "memory"\
         else sqlite3.connect(self.file))
-        self.cursor = connection.cursor()
+        self.cursor = self.connection.cursor()
