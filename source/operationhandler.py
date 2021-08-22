@@ -32,6 +32,26 @@ class OperationHandler:
         """
         prints help text
         """
+        print(colorama.Fore.MAGENTA)
+        print()
+        print("List of commands and explanation")
+        print()
+        ce = {
+        "help": "prints a list with commands and their use",
+        "exit": "leaves the program",
+        "[a] = [b]": "sets variable a to value b. Its value can be read by $a",
+        "$a": "reads and replaces variable a's value. If it's the only statement the value of a will be prompted",
+        "del a": "deletes variable a",
+        "show -v[variables]": "shows all variables and their values",
+        ":$a": "Auxiliary statement. If a command in variable a is stored, and you type $a, the value will be prompted. But if you type :$a, a will be executed",
+        "file = name": "sets the current database file to name, memory sets it to session memory",
+        "ANY OTHER STATEMENT": "sql statements like SELECT, CREATE TABLE usw. will be executed automatically",
+        }
+        print("-"*30)
+        for el in ce:
+            print("{:<20} | {:^10} ".format(el, ce[el]))
+        print("-"*30)
+        print(colorama.Fore.RESET)
         return "RUNNING"
 
     def exit(self):
@@ -40,11 +60,17 @@ class OperationHandler:
         """
         return "STOPPED"
 
-    def make_variable(name, value):
-        pass
 
     def change_file_mode(self, name):
-        pass
+        """
+        changes file mode to name
+        """
+        if not self.sqHandler.change_file(name):
+            print(colorama.Fore.RED)
+            print("ERROR: File is still selected.\nType 'help' to see help")
+            print(colorama.Fore.RESET)
+        return "RUNNING"
+
 
     def execute(self, eingabe):
         """
@@ -52,7 +78,7 @@ class OperationHandler:
         """
         try:
             readen = False
-            upe = eingabe.lowercase()
+            upe = eingabe.lower()
             if "select" in upe:
                 readen = True
             back = self.sqHandler.execute(eingabe, readen)
@@ -67,25 +93,30 @@ class OperationHandler:
             print(colorama.Fore.RESET)
         return "RUNNING"
 
+
+
     def substitute_variables(self, eingabe):
         """
         substitutes variables
         """
+        only_show = False
+        show_pattern = r"^\$([a-zA-Z]+)$"
+        show_found = re.search(show_pattern, eingabe)
+        if bool(show_found):
+            only_show = self.variablecontainer.exists(show_found.groups(0)[0])
         pattern = r"\$([a-zA-Z]*)"
         found = re.findall(pattern, eingabe)
-        asked = (len(re.findall(r"(\$[a-zA-Z]+ ?)", eingabe)) == len(re.findall("\$", eingabe)))
         if found:
             for el in found:
                 if self.variablecontainer.exists(str(el)):
                     eingabe = eingabe.replace(str("$"+el), self.variablecontainer.get_var(str(el)))
-        return eingabe, asked
+        return eingabe, only_show
 
-    def add_variable(self, typ, name, value):
+    def add_variable(self, name, value):
         """
         Adds a variable
         """
-        typ = self.variablecontainer.variable_operations[typ]
-        self.variablecontainer.make_var(name, typ(value))
+        self.variablecontainer.make_var(name, value)
         return "RUNNING"
 
     def show_variables(self):

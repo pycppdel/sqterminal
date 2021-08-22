@@ -6,12 +6,6 @@ class VariableContainer:
     def __init__(self):
         #container for variables
         self.saved_variables = {}
-        #for changing variables
-        self.variable_operations = {
-
-        "string": str,
-        "int": str,
-        }
 
     def exists(self, var):
         """
