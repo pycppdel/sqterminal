@@ -100,11 +100,11 @@ class OperationHandler:
         substitutes variables
         """
         only_show = False
-        show_pattern = r"^\$([a-zA-Z]+)$"
+        show_pattern = r"^\$(.+)$"
         show_found = re.search(show_pattern, eingabe)
         if bool(show_found):
             only_show = self.variablecontainer.exists(show_found.groups(0)[0])
-        pattern = r"\$([a-zA-Z]*)"
+        pattern = r"\$(.+)"
         found = re.findall(pattern, eingabe)
         if found:
             for el in found:

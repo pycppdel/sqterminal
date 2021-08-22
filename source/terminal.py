@@ -38,11 +38,11 @@ class TerminalHandler:
         extracting infos
         """
         #regular expressions
-        variable_make = r"^([a-zA-Z]*) = ([a-zA-Z0-9 ]+)$"
+        variable_make = r"^(.+) = (.+)$"
         #for destroying
-        variable_destroy = r"^del [-v ]?([a-zA-Z]*)$"
+        variable_destroy = r"^del [-v ]?(.+)$"
         #file_change
-        file_change = r"^[Ff]ile *= *([\w|\d|\.]*)$"
+        file_change = r"^[Ff]ile *= *(.+)$"
 
         #bool
         variable_inside = re.search(variable_make, eingabe)
